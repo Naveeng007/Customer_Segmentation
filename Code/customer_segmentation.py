@@ -122,13 +122,13 @@ tx_user.groupby('RevenueCluster')['Revenue'].describe()
 #order revenue in order of ascending order
 tx_user=order_cluster('RevenueCluster','Revenue',tx_user,True)
 #NOW
-tx_user.groupby('RevenueCluster')['Revenue'].describe()
+tx_user.groupby('RevenueCluster')['Revenue'].describe()#grouping by revenuecluster then corresponding to that finding revenue mean
 
 
 tx_user['OverallScore'] = tx_user['RecencyCluster'] + tx_user['FrequencyCluster'] + tx_user['RevenueCluster']
 tx_user.groupby('OverallScore')['Recency','Frequency','Revenue'].mean()
 
-tx_user['Segment'] = 'Low-Value'
+tx_user['Segment'] = 'Low-Value'#if value less than 2 marked as low value
 tx_user.loc[tx_user['OverallScore']>2,'Segment'] = 'Mid-Value' 
 tx_user.loc[tx_user['OverallScore']>4,'Segment'] = 'High-Value'
 
@@ -136,7 +136,7 @@ tx_user.loc[tx_user['OverallScore']>4,'Segment'] = 'High-Value'
 plt.xlabel('Frequency')
 plt.ylabel('Revenue')
 tx_graph=tx_user.query('Revenue<50000 and Frequency<2000')
-plt.scatter(tx_graph.query("Segment == 'Low-Value'")['Frequency'],tx_graph.query("Segment == 'Low-Value'")['Revenue'], s = 100, c = 'red', label = 'Cluster 1')
+plt.scatter(tx_graph.query("Segment == 'Low-Value'")['Frequency'],tx_graph.query("Segment == 'Low-Value'")['Revenue'], s = 100, c = 'red', label = 'Cluster 1')#applying query to find segments then ['recency'] means selecting only this column, s=100 means scatter size 
 plt.scatter(tx_graph.query("Segment == 'Mid-Value'")['Frequency'],tx_graph.query("Segment == 'Mid-Value'")['Revenue'], s = 100, c = 'blue', label = 'Cluster 2')
 plt.scatter(tx_graph.query("Segment == 'High-Value'")['Frequency'],tx_graph.query("Segment == 'High-Value'")['Revenue'], s = 100, c = 'green', label = 'Cluster 3')
 
